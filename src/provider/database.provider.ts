@@ -7,11 +7,11 @@ console.log(DATABASE_URL);
 
 export const databaseProviders = [
   {
-    provide: 'SEQUELIZE',
+    provide: Sequelize,
     useFactory: async () => {
       const sequelize = new Sequelize(DATABASE_URL);
       sequelize.addModels([User]);
-      await sequelize.sync();
+      await sequelize.sync({ force: true }); // 개발시에만
       return sequelize;
     },
   },

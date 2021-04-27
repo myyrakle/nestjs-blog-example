@@ -1,29 +1,47 @@
-import { Table, Column, Model, Unique, Comment } from 'sequelize-typescript';
-
-export enum UserType {
-  ADMIN,
-  USER,
-}
+import {
+  Table,
+  Column,
+  Model,
+  Unique,
+  Comment,
+  DataType,
+  Default,
+  AllowNull,
+  PrimaryKey,
+  AutoIncrement,
+} from 'sequelize-typescript';
 
 @Table
 export class User extends Model {
+  @Comment('식별자')
+  @PrimaryKey
+  @AutoIncrement
+  @Column
+  id: bigint;
+
   @Comment('이메일(아이디)')
+  @AllowNull(false)
+  @Unique
   @Column
   email: string;
 
   @Comment('해싱된 패스워드')
-  @Column
+  @AllowNull(false)
+  @Column(DataType.TEXT)
   password: string;
 
   @Comment('패스워드 솔팅값')
-  @Column
+  @AllowNull(false)
+  @Column(DataType.TEXT)
   passwordSalt: string;
 
   @Comment('사용자 이름')
-  @Column
+  @Column(DataType.STRING(100))
   name: string;
 
   @Comment('사용자 타입')
-  @Column
-  userType: UserType;
+  @AllowNull(false)
+  @Default('USER')
+  @Column(DataType.ENUM('USER', 'ADMIN'))
+  userType: string;
 }

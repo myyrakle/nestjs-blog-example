@@ -1,0 +1,14 @@
+@token = localhost:3000
+
+###
+POST http://{{token}}/auth/signup
+Content-Type: application/json
+
+{
+    "name": "테스터", 
+    "email": "sssang97@naver.com",
+    "password":"foobar1234"
+}
+###
+
+
