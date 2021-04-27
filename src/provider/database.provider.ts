@@ -1,7 +1,9 @@
 import { Sequelize } from 'sequelize-typescript';
 import { User } from '../entity/user.entity';
 
-const DATABASE_URL = process.env.NEST_JS_TEST_DATEBASE_URL;
+const DATABASE_URL = process.env['NEST_JS_TEST_DATEBASE_URL'];
+
+console.log(DATABASE_URL);
 
 export const databaseProviders = [
   {
