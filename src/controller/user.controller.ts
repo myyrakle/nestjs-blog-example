@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { CheckEmailRequestDto } from 'src/dto/check_email.request.dto';
+import { CheckEmailResponseDto } from 'src/dto/check_email.response.dto';
 import { SignupRequestDto } from 'src/dto/signup.request.dto';
 import { SignupResponseDto } from 'src/dto/signup.response.dto';
 import { UserCreateDto } from 'src/dto/user.create.dto';
@@ -9,13 +11,17 @@ import { AppService } from '../service/app.service';
 @Controller('/user')
 export class UserController {
   constructor(
-    private readonly appService: AppService,
+    private readonly _appService: AppService,
     private readonly userService: UserService,
   ) {}
 
   @Post('/signup')
   async signup(@Body() body: SignupRequestDto): Promise<SignupResponseDto> {
-    if (await this.userService.checkEmailDuplicated(body?.email)) {
+    const emailDeplicated = await this.userService.checkEmailDuplicated(
+      body?.email,
+    );
+
+    if (emailDeplicated) {
       return {
         success: false,
         emailDuplicated: true,
@@ -34,5 +40,21 @@ export class UserController {
         error: null,
       };
     }
+  }
+
+  @Get('/check-email-duplicated')
+  async checkEmailDuplicated(
+    @Query() query: CheckEmailRequestDto,
+  ): Promise<CheckEmailResponseDto> {
+    const emailDuplicated = await this.userService.checkEmailDuplicated(
+      query?.email,
+    );
+
+    return {
+      success: true,
+      emailDuplicated,
+      message: '',
+      error: null,
+    };
   }
 }

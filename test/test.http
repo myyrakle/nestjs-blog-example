@@ -1,7 +1,7 @@
 @token = localhost:3000
 
 ###
-POST http://{{token}}/auth/signup
+POST http://{{token}}/user/signup
 Content-Type: application/json
 
 {
