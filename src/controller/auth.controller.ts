@@ -15,12 +15,16 @@ import { CheckEmailRequestDto } from 'src/dto/check_email.request.dto';
 import { CheckEmailResponseDto } from 'src/dto/check_email.response.dto';
 import { LoginRequestDto } from 'src/dto/login.request.dto';
 import { LoginResponseDto } from 'src/dto/login.response.dto';
+import { LogoutRequestDto } from 'src/dto/logout.request.dto';
+import { LogoutResponseDto } from 'src/dto/logout.response.dto';
+import { RefreshRequestDto } from 'src/dto/refresh.request.dto';
 import { SignupRequestDto } from 'src/dto/signup.request.dto';
 import { SignupResponseDto } from 'src/dto/signup.response.dto';
 import { UserCreateDto } from 'src/dto/user.create.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { makeAccessToken, makeRefreshToken } from 'src/lib/jwt';
 import { passwordHashing } from 'src/lib/password';
+import { RefreshTokenService } from 'src/service/refresh_token.service';
 import { UserService } from 'src/service/user.service';
 import { AppService } from '../service/app.service';
 
@@ -29,6 +33,7 @@ export class AuthController {
   constructor(
     private readonly _appService: AppService,
     private readonly userService: UserService,
+    private readonly tokenService: RefreshTokenService,
   ) {}
 
   @Post('/login')
@@ -42,6 +47,8 @@ export class AuthController {
       if (user.password === passwordHashing(body.password, user.passwordSalt)) {
         const accessToken = makeAccessToken({ userId: user.id });
         const refreshToken = makeRefreshToken({ userId: user.id });
+
+        await this.tokenService.createToken(user.id, refreshToken);
 
         response.cookie('accessToken', accessToken);
 
@@ -63,7 +70,7 @@ export class AuthController {
       return {
         success: false,
         refreshToken: '',
-        message: '이메일 겹침',
+        message: '',
         error: null,
       };
     }
@@ -71,15 +78,19 @@ export class AuthController {
 
   @Put('/refresh')
   async refresh(
-    @Query() query: CheckEmailRequestDto,
-  ): Promise<CheckEmailResponseDto> {
-    const emailDuplicated = await this.userService.checkEmailDuplicated(
-      query?.email,
-    );
+    @Body() body: RefreshRequestDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const token = await this.tokenService.checkToken(body.refreshToken);
+
+    if (token != null) {
+      const user = await this.userService.findOneById(token?.userId);
+      const accessToken = makeAccessToken({ userId: user?.id });
+      response.cookie('accessToken', accessToken);
+    }
 
     return {
       success: true,
-      emailDuplicated,
       message: '',
       error: null,
     };
@@ -87,16 +98,15 @@ export class AuthController {
 
   @Delete('/logout')
   async logout(
-    @Req() req: Request,
-    @Query() query: CheckEmailRequestDto,
-  ): Promise<CheckEmailResponseDto> {
-    const emailDuplicated = await this.userService.checkEmailDuplicated(
-      query?.email,
-    );
+    @Res({ passthrough: true }) response: Response,
+    @Query() query: LogoutRequestDto,
+  ): Promise<LogoutResponseDto> {
+    await this.tokenService.deleteToken(query.refreshToken);
+
+    response.clearCookie('accessToken');
 
     return {
       success: true,
-      emailDuplicated,
       message: '',
       error: null,
     };
