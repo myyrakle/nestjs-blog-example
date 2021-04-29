@@ -8,6 +8,7 @@ import { AuthGuard } from 'src/guard/auth.guard';
 import { UserService } from 'src/service/user.service';
 import { AppService } from '../service/app.service';
 
+@UseGuards(AuthGuard)
 @Controller('/user')
 export class UserController {
   constructor(

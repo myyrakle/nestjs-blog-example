@@ -11,8 +11,17 @@ export class UserService {
   // 이메일이 중복되면 true,
   async checkEmailDuplicated(email: string): Promise<boolean> {
     const user = await this.userRepository.findOneByEmail(email);
-    console.log(user);
     return user !== null;
+  }
+
+  // 이메일이 중복되면 true,
+  async findOneByEmail(email: string): Promise<User> {
+    return await this.userRepository.findOneByEmail(email);
+  }
+
+  // 이메일이 중복되면 true,
+  async findOneById(id: bigint): Promise<User> {
+    return await this.userRepository.findOneById(id);
   }
 
   // 회원가입

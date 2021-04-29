@@ -1,17 +1,22 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
+import { checkToken } from 'src/lib/jwt';
+import { UserService } from 'src/service/user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
+  constructor(
+    private readonly reflector: Reflector,
+    private userService: UserService,
+  ) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext) {
     console.log('인증 가드 시작 >>>>');
 
     const request = context.switchToHttp().getRequest();
+
+    //context.switchToHttp().
 
     // 핸들러단위 Role 목록
     const handlerRoles =
@@ -27,9 +32,32 @@ export class AuthGuard implements CanActivate {
     const params = request.params;
     const query = request.query;
     const body = request.body;
+    const cookies = request.cookies;
+
+    const accessToken = cookies?.accessToken;
+
+    if (accessToken) {
+      try {
+        const decoded = checkToken(accessToken);
+        const user = await this.userService.findOneById(decoded?.userId);
+        request.authUser = user;
+
+        console.log('인증 성공: ', user.toJSON());
+      } catch {}
+    }
 
     let auth = true;
-    // 인증 처리...
+
+    if (handlerRoles.includes('ADMIN') || controllerRoles.includes('ADMIN')) {
+      auth = request.authUser?.userType === 'ADMIN';
+    } else if (
+      handlerRoles.includes('USER') ||
+      controllerRoles.includes('USER')
+    ) {
+      auth =
+        request.authUser?.userType === 'ADMIN' ||
+        request.authUser?.userType === 'USER';
+    }
 
     console.log('인증 가드 종료 <<<<');
 

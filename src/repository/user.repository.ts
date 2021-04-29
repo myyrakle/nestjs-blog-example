@@ -41,8 +41,8 @@ export class UserRepository {
   }
 
   // 이메일로 조회
-  async findOneById(email: string): Promise<User> {
-    return await User.findOne({ where: { email } });
+  async findOneById(id: bigint): Promise<User> {
+    return await User.findOne({ where: { id } });
   }
 
   // 이메일로 조회
