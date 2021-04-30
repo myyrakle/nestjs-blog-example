@@ -87,13 +87,19 @@ export class AuthController {
       const user = await this.userService.findOneById(token?.userId);
       const accessToken = makeAccessToken({ userId: user?.id });
       response.cookie('accessToken', accessToken);
-    }
 
-    return {
-      success: true,
-      message: '',
-      error: null,
-    };
+      return {
+        success: true,
+        message: '성공',
+        error: null,
+      };
+    } else {
+      return {
+        success: false,
+        message: '유효하지 않은 토큰',
+        error: null,
+      };
+    }
   }
 
   @Delete('/logout')
