@@ -28,6 +28,7 @@
     "class-validator": "^0.13.1",
     "cookie-parser": "^1.4.5",
     "jsonwebtoken": "^8.5.1",
+    "mybatis-mapper-myyrakle": "^0.8.0",
     "mysql2": "^2.2.5",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",

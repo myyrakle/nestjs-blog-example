@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SHARE">
+
+   
+    <select id="WHOSPICK.SELECT.NOTICE">
+        SELECT 
+            A.NOTICE_NO
+            , A.NOTICE_TYPE_NO
+            , B.CONTENT AS NOTICE_TYPE_TEXT
+            , A.TITLE
+            , A."content"
+            , A.UPLOAD_DT AS REG_DT
+            , (
+                SELECT JSONB_BUILD_OBJECT(
+                    'notice_no'
+                    , PREV.NOTICE_NO 
+                    , 'notice_type_text'
+                    , (SELECT CONTENT FROM TB_NOTICE_TYPE WHERE NOTICE_NO = PREV.NOTICE_NO LIMIT 1)
+                    , 'title'
+                    , PREV.TITLE
+                )
+                FROM TB_NOTICE PREV 
+                WHERE 1=1
+                    AND PREV.UPLOAD_DT > A.UPLOAD_DT
+                    AND PREV.NOTICE_NO != A.NOTICE_NO
+                    AND PREV.USE_YN 
+                ORDER BY 
+                    PREV.UPLOAD_DT ASC 
+                    , PREV.NOTICE_NO ASC
+                LIMIT 1
+            ) AS PREV
+            , (
+                SELECT JSONB_BUILD_OBJECT(
+                    'notice_no'
+                    , NEXT.NOTICE_NO 
+                    , 'notice_type_text'
+                    , (SELECT CONTENT FROM TB_NOTICE_TYPE WHERE NOTICE_NO = NEXT.NOTICE_NO LIMIT 1)
+                    , 'title'
+                    , NEXT.TITLE
+                )
+                FROM TB_NOTICE NEXT 
+                WHERE 1=1
+                    AND NEXT.UPLOAD_DT &lt;= A.UPLOAD_DT
+                    AND NEXT.NOTICE_NO != A.NOTICE_NO
+                    AND NEXT.USE_YN
+                ORDER BY 
+                    NEXT.UPLOAD_DT DESC 
+                    , NEXT.NOTICE_NO DESC 
+                LIMIT 1
+            ) AS NEXT
+        FROM 
+        (
+            SELECT 
+                * 
+            FROM TB_NOTICE A
+            WHERE 1=1
+                AND A.NOTICE_NO = #{notice_no}
+                AND A.USE_YN IS TRUE 
+                AND A.UPLOAD_DT &lt;= floor(date_part('epoch'::text, now()))::bigint
+        ) A 
+        JOIN TB_NOTICE_TYPE B
+        ON 1=1
+            AND A.NOTICE_TYPE_NO = B.NOTICE_TYPE_NO
+    </select>
+</mapper>

@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from 'src/controller/auth.controller';
 import { UserController } from 'src/controller/user.controller';
+import { AuthUser } from 'src/provider/auth_user.provider';
 import { databaseProviders } from 'src/provider/database.provider';
+import { Mybatis } from 'src/provider/mybatis.provider';
 import { RefreshTokenRepository } from 'src/repository/refresh_token.repository';
 import { UserRepository } from 'src/repository/user.repository';
 import { RefreshTokenService } from 'src/service/refresh_token.service';
@@ -18,6 +20,8 @@ import { AppService } from '../service/app.service';
     UserRepository,
     RefreshTokenService,
     RefreshTokenRepository,
+    AuthUser,
+    Mybatis,
     ...databaseProviders,
   ],
 })

@@ -1,14 +1,21 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
+import {
+  CanActivate,
+  ExecutionContext,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { Reflector, REQUEST } from '@nestjs/core';
 import { checkToken } from 'src/lib/jwt';
+import { AuthUser } from 'src/provider/auth_user.provider';
 import { UserService } from 'src/service/user.service';
+import { UserView } from 'src/vo/user.dto';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private userService: UserService,
+    @Inject(REQUEST) private authUser: AuthUser,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -40,7 +47,15 @@ export class AuthGuard implements CanActivate {
       try {
         const decoded = checkToken(accessToken);
         const user = await this.userService.findOneById(decoded?.userId);
-        request.authUser = user;
+        const userView: UserView = {
+          id: user?.id,
+          email: user?.email,
+          name: user?.name,
+          userType: user?.userType,
+        };
+        request.authUser = userView;
+        this.authUser.authorized = true;
+        this.authUser.user = userView;
 
         console.log('인증 성공: ', user.toJSON());
       } catch {}
