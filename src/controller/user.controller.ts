@@ -21,6 +21,7 @@ import { Roles } from 'src/lib/decorator';
 import { AuthUser } from 'src/provider/auth_user.provider';
 import { UserService } from 'src/service/user.service';
 import { AppService } from '../service/app.service';
+import { DefaultResponseDto } from 'src/dto/default.response.dto';
 
 @UseGuards(AuthGuard)
 @Controller('/user')
@@ -88,11 +89,10 @@ export class UserController {
 
   @Delete('/close-my-account')
   @Roles(['USER'])
-  async closeMyAccount(): Promise<MyInfoResponseDto> {
-    console.log('??', this.authUser);
+  async closeMyAccount(): Promise<DefaultResponseDto> {
+    await this.userService.deleteOneById(this.authUser?.user?.id);
     return {
       success: true,
-      user: this.authUser?.user,
       message: '',
       error: null,
     };

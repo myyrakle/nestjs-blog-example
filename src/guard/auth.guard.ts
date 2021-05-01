@@ -8,7 +8,7 @@ import { Reflector, REQUEST } from '@nestjs/core';
 import { checkToken } from 'src/lib/jwt';
 import { AuthUser } from 'src/provider/auth_user.provider';
 import { UserService } from 'src/service/user.service';
-import { UserView } from 'src/vo/user.dto';
+import { UserView } from 'src/vo/user_view.dto';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

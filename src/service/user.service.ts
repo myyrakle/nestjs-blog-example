@@ -26,7 +26,7 @@ export class UserService {
 
   // 사용자 삭제
   async deleteOneById(id: bigint) {
-    return await this.userRepository.findOneById(id);
+    return await this.userRepository.deleteOneById(id);
   }
 
   // 회원가입
