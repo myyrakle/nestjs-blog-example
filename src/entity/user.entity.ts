@@ -44,4 +44,10 @@ export class User extends Model {
   @Default('USER')
   @Column(DataType.ENUM('USER', 'ADMIN'))
   userType: string;
+
+  @Comment('사용자 상태. 0=정상')
+  @AllowNull(false)
+  @Default(0)
+  @Column
+  userStatus: bigint;
 }

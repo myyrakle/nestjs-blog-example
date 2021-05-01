@@ -23,8 +23,6 @@ export class AuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
 
-    //context.switchToHttp().
-
     // 핸들러단위 Role 목록
     const handlerRoles =
       this.reflector.get<string[]>('roles', context.getHandler()) || [];
@@ -33,12 +31,12 @@ export class AuthGuard implements CanActivate {
     const controllerRoles =
       this.reflector.get<string[]>('roles', context.getClass()) || [];
 
-    const url = request.url;
-    const method = request.method;
-    const headers = request.headers;
-    const params = request.params;
-    const query = request.query;
-    const body = request.body;
+    // const url = request.url;
+    // const method = request.method;
+    // const headers = request.headers;
+    // const params = request.params;
+    // const query = request.query;
+    // const body = request.body;
     const cookies = request.cookies;
 
     const accessToken = cookies?.accessToken;

@@ -9,27 +9,28 @@ export class UserService {
   constructor(private userRepository: UserRepository) {}
 
   // 이메일이 중복되면 true,
-  async checkEmailDuplicated(email: string): Promise<boolean> {
+  async checkEmailDuplicated(email: string) {
     const user = await this.userRepository.findOneByEmail(email);
     return user !== null;
   }
 
-  // 이메일이 중복되면 true,
-  async findOneByEmail(email: string): Promise<User> {
+  // 이메일로 사용자 탐색
+  async findOneByEmail(email: string) {
     return await this.userRepository.findOneByEmail(email);
   }
 
-  // 이메일이 중복되면 true,
-  async findOneById(id: bigint): Promise<User> {
+  // 식별자로 사용자 탐색
+  async findOneById(id: bigint) {
+    return await this.userRepository.findOneById(id);
+  }
+
+  // 사용자 삭제
+  async deleteOneById(id: bigint) {
     return await this.userRepository.findOneById(id);
   }
 
   // 회원가입
-  async signup(value: UserCreateDto): Promise<User> {
+  async signup(value: UserCreateDto) {
     return this.userRepository.createOne(value);
-  }
-
-  getHello(): string {
-    return 'Hello World!';
   }
 }

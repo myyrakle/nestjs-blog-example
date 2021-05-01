@@ -11,17 +11,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { CheckEmailRequestDto } from 'src/dto/check_email.request.dto';
-import { CheckEmailResponseDto } from 'src/dto/check_email.response.dto';
-import { LoginRequestDto } from 'src/dto/login.request.dto';
-import { LoginResponseDto } from 'src/dto/login.response.dto';
-import { LogoutRequestDto } from 'src/dto/logout.request.dto';
-import { LogoutResponseDto } from 'src/dto/logout.response.dto';
-import { RefreshRequestDto } from 'src/dto/refresh.request.dto';
-import { SignupRequestDto } from 'src/dto/signup.request.dto';
-import { SignupResponseDto } from 'src/dto/signup.response.dto';
-import { UserCreateDto } from 'src/dto/user.create.dto';
-import { AuthGuard } from 'src/guard/auth.guard';
+import { LoginRequestDto } from 'src/dto/auth/login.request.dto';
+import { LoginResponseDto } from 'src/dto/auth/login.response.dto';
+import { LogoutRequestDto } from 'src/dto/auth/logout.request.dto';
+import { LogoutResponseDto } from 'src/dto/auth/logout.response.dto';
+import { RefreshRequestDto } from 'src/dto/auth/refresh.request.dto';
 import { makeAccessToken, makeRefreshToken } from 'src/lib/jwt';
 import { passwordHashing } from 'src/lib/password';
 import { RefreshTokenService } from 'src/service/refresh_token.service';
