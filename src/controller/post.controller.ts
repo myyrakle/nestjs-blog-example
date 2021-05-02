@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   Inject,
   Param,
@@ -57,9 +58,22 @@ export class PostController {
     @Body() body: PostUpdateRequestDto,
     @Param('id') id: bigint,
   ): Promise<PostUpdateResponseDto> {
-    const result = await this.postService.updateOne({
+    const post = await this.postService.findOneById(id);
+
+    if (
+      this.authUser?.user.userType !== 'ADMIN' &&
+      this.authUser?.user.id !== post.userId
+    ) {
+      throw new ForbiddenException({
+        success: false,
+        error: '',
+        message: '권한 불충분',
+      });
+    }
+
+    await this.postService.updateOne({
       ...body,
-      userId: this.authUser?.user?.id,
+      userId: post.userId,
       id,
     });
 
