@@ -1,11 +1,20 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Inject, Post } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { AuthUser } from 'src/provider/auth_user.provider';
 import { AppService } from '../service/app.service';
-@Controller()
+@Controller('/')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    @Inject(REQUEST) private readonly authUser: AuthUser,
+  ) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  index() {
+    return {
+      message: 'Hello!',
+      authorized: this?.authUser?.authorized ?? false,
+      userInfo: this?.authUser?.user ?? null,
+    };
   }
 }

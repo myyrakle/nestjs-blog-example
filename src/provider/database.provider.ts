@@ -1,4 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
+import { PostComment } from 'src/entity/post.comment.entity';
+import { Post } from 'src/entity/post.entity';
 import { RefreshToken } from 'src/entity/refresh.token.entity';
 import { User } from '../entity/user.entity';
 
@@ -11,7 +13,7 @@ export const databaseProviders = [
     provide: Sequelize,
     useFactory: async () => {
       const sequelize = new Sequelize(DATABASE_URL);
-      sequelize.addModels([User, RefreshToken]);
+      sequelize.addModels([User, RefreshToken, Post, PostComment]);
       await sequelize.sync({ force: true }); // 개발시에만
       return sequelize;
     },

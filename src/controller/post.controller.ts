@@ -22,25 +22,32 @@ import { AuthUser } from 'src/provider/auth_user.provider';
 import { UserService } from 'src/service/user.service';
 import { AppService } from '../service/app.service';
 import { DefaultResponseDto } from 'src/dto/default.response.dto';
+import { PostCreateRequestDto } from 'src/dto/post/post_create.request.dto';
+import { PostCreateResponseDto } from 'src/dto/post/post_create.response.dto';
+import { PostService } from 'src/service/post.service';
 
 @UseGuards(AuthGuard)
 @Controller('/post')
 export class PostController {
   constructor(
     private readonly _appService: AppService,
-    private readonly userService: UserService,
+    private readonly postService: PostService,
     @Inject(REQUEST) private readonly authUser: AuthUser,
   ) {}
 
+  @Roles(['USER'])
   @Post('/post')
-  async createPost(@Body() body: SignupRequestDto): Promise<SignupResponseDto> {
-    const emailDeplicated = await this.userService.checkEmailDuplicated(
-      body?.email,
-    );
+  async createPost(
+    @Body() body: PostCreateRequestDto,
+  ): Promise<PostCreateResponseDto> {
+    const result = await this.postService.createOne({
+      ...body,
+      userId: this.authUser?.user?.id,
+    });
 
     return {
       success: true,
-      emailDuplicated: false,
+      postId: result.id,
       message: '성공',
       error: null,
     };

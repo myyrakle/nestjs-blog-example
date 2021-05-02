@@ -27,7 +27,7 @@ export class PostComment extends Model {
   @AllowNull(false)
   @ForeignKey(() => User)
   @Column
-  userId: string;
+  userId: bigint;
 
   @Comment('포스트')
   @AllowNull(false)
