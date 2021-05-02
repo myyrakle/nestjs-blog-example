@@ -6,6 +6,9 @@ import { User } from '../entity/user.entity';
 
 const DATABASE_URL = process.env['NEST_JS_TEST_DATEBASE_URL'];
 
+import * as pg from 'pg';
+pg.defaults.parseInt8 = true;
+
 console.log(DATABASE_URL);
 
 export const databaseProviders = [
