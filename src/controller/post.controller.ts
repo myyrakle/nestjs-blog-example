@@ -25,6 +25,7 @@ import { PostUpdateDto } from 'src/dto/post.update.dto';
 import { PostCreateRequestDto } from 'src/dto/post/post_create.request.dto';
 import { PostCreateResponseDto } from 'src/dto/post/post_create.response.dto';
 import { DefaultResponseDto } from 'src/dto/default.response.dto';
+import { PostSelectResponseDto } from 'src/dto/post/post_select.response.dto';
 
 @UseGuards(AuthGuard)
 @Controller('/post')
@@ -106,6 +107,18 @@ export class PostController {
 
     return {
       success: true,
+      message: '성공',
+      error: null,
+    };
+  }
+
+  @Get('/post/:id')
+  async selectPost(@Param('id') id: bigint): Promise<PostSelectResponseDto> {
+    const post = await this.postService.findOneById(id);
+
+    return {
+      success: true,
+      post,
       message: '성공',
       error: null,
     };

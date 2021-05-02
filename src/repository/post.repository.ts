@@ -7,6 +7,7 @@ import { UserCreateDto } from 'src/dto/user.create.dto';
 import { UserUpdateDto } from 'src/dto/user.update.dto';
 import { Post } from 'src/entity/post.entity';
 import { User } from 'src/entity/user.entity';
+import { PostView } from 'src/vo/post_view.dto';
 
 @Injectable()
 export class PostRepository {
@@ -31,7 +32,10 @@ export class PostRepository {
   }
 
   // 식별자로 조회
-  async findOneById(id: bigint) {
-    return await Post.findOne({ where: { id, useYn: true } });
+  async findOneById(id: bigint): Promise<PostView> {
+    return await Post.findOne({
+      where: { id, useYn: true },
+      include: { model: User, attributes: ['name', 'email', 'userType'] },
+    });
   }
 }
