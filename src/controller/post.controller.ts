@@ -24,6 +24,7 @@ import { PostService } from 'src/service/post.service';
 import { PostUpdateDto } from 'src/dto/post.update.dto';
 import { PostCreateRequestDto } from 'src/dto/post/post_create.request.dto';
 import { PostCreateResponseDto } from 'src/dto/post/post_create.response.dto';
+import { DefaultResponseDto } from 'src/dto/default.response.dto';
 
 @UseGuards(AuthGuard)
 @Controller('/post')
@@ -80,6 +81,31 @@ export class PostController {
     return {
       success: true,
       postId: id,
+      message: '성공',
+      error: null,
+    };
+  }
+
+  @Roles(['USER'])
+  @Delete('/post/:id')
+  async deletePost(@Param('id') id: bigint): Promise<DefaultResponseDto> {
+    const post = await this.postService.findOneById(id);
+
+    if (
+      this.authUser?.user.userType !== 'ADMIN' &&
+      this.authUser?.user.id !== post.userId
+    ) {
+      throw new ForbiddenException({
+        success: false,
+        error: '',
+        message: '권한 불충분',
+      });
+    }
+
+    await this.postService.deleteOneById(id);
+
+    return {
+      success: true,
       message: '성공',
       error: null,
     };
