@@ -26,6 +26,8 @@ import { PostCreateRequestDto } from 'src/dto/post/post_create.request.dto';
 import { PostCreateResponseDto } from 'src/dto/post/post_create.response.dto';
 import { DefaultResponseDto } from 'src/dto/default.response.dto';
 import { PostSelectResponseDto } from 'src/dto/post/post_select.response.dto';
+import { PostListRequestDto } from 'src/dto/post/post_list.request.dto';
+import { PostListResponseDto } from 'src/dto/post/post_list.response.dto';
 
 @UseGuards(AuthGuard)
 @Controller('/post')
@@ -119,6 +121,28 @@ export class PostController {
     return {
       success: true,
       post,
+      message: '성공',
+      error: null,
+    };
+  }
+
+  @Get('/post-list')
+  async selectPostList(
+    @Query() query: PostListRequestDto,
+  ): Promise<PostListResponseDto> {
+    const limit = query.limit ?? 10;
+    const page = query.page ?? 1;
+    const offset = (page - 1) * limit;
+
+    const [list, totalCount] = await this.postService.findList({
+      limit,
+      offset,
+    });
+
+    return {
+      success: true,
+      list,
+      totalCount,
       message: '성공',
       error: null,
     };

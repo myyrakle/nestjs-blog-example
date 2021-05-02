@@ -1,8 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PostCreateDto } from 'src/dto/post.create.dto';
 import { PostUpdateDto } from 'src/dto/post.update.dto';
+import { PostListDto } from 'src/dto/post_list.dto';
 import { UserCreateDto } from 'src/dto/user.create.dto';
 import { PostRepository } from 'src/repository/post.repository';
+import { PostView } from 'src/vo/post_view.dto';
 
 @Injectable()
 export class PostService {
@@ -26,5 +28,20 @@ export class PostService {
   // 게시글 수정
   async updateOne(value: PostUpdateDto) {
     return await this.postRepository.updateOne(value);
+  }
+
+  // 게시글 목록조회
+  async findList(value: PostListDto): Promise<[PostView[], bigint]> {
+    const result: any[] = await this.postRepository.findList(value);
+    const list: PostView[] = result.map((e) => ({
+      id: e.id,
+      userId: e.userId,
+      title: e.title,
+      content: e.content,
+      user: e.user,
+    }));
+    const totalCount = result.length === 0 ? 0 : result[0].totalCount;
+
+    return [list, totalCount];
   }
 }
