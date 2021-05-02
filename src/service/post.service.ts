@@ -25,6 +25,6 @@ export class PostService {
 
   // 게시글 수정
   async updateOne(value: PostUpdateDto) {
-    return await this.postRepository.createOne(value);
+    return await this.postRepository.updateOne(value);
   }
 }
