@@ -22,9 +22,11 @@ import { AuthUser } from 'src/provider/auth_user.provider';
 import { UserService } from 'src/service/user.service';
 import { AppService } from '../service/app.service';
 import { DefaultResponseDto } from 'src/dto/default.response.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @UseGuards(AuthGuard)
 @Controller('/user')
+@ApiTags('user')
 export class UserController {
   constructor(
     private readonly _appService: AppService,

@@ -21,8 +21,10 @@ import { passwordHashing } from 'src/lib/password';
 import { RefreshTokenService } from 'src/service/refresh_token.service';
 import { UserService } from 'src/service/user.service';
 import { AppService } from '../service/app.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('/auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(
     private readonly _appService: AppService,

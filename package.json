@@ -24,6 +24,7 @@
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
     "@nestjs/platform-express": "^7.6.15",
+    "@nestjs/swagger": "^4.8.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "cookie-parser": "^1.4.5",
@@ -36,6 +37,7 @@
     "rxjs": "^6.6.6",
     "sequelize": "^6.6.2",
     "sequelize-typescript": "^2.1.0",
+    "swagger-ui-express": "^4.1.6",
     "uuidv4": "^6.2.7"
   },
   "devDependencies": {

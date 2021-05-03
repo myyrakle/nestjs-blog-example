@@ -9,27 +9,26 @@ import {
   Post,
   Put,
   Query,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { Roles } from 'src/lib/decorator';
 import { AuthUser } from 'src/provider/auth_user.provider';
-import { UserService } from 'src/service/user.service';
 import { AppService } from '../service/app.service';
 import { PostUpdateRequestDto } from 'src/dto/post/post_update.request.dto';
 import { PostUpdateResponseDto } from 'src/dto/post/post_update.response.dto';
 import { PostService } from 'src/service/post.service';
-import { PostUpdateDto } from 'src/dto/post.update.dto';
 import { PostCreateRequestDto } from 'src/dto/post/post_create.request.dto';
 import { PostCreateResponseDto } from 'src/dto/post/post_create.response.dto';
 import { DefaultResponseDto } from 'src/dto/default.response.dto';
 import { PostSelectResponseDto } from 'src/dto/post/post_select.response.dto';
 import { PostListRequestDto } from 'src/dto/post/post_list.request.dto';
 import { PostListResponseDto } from 'src/dto/post/post_list.response.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @UseGuards(AuthGuard)
+@ApiTags('post')
 @Controller('/post')
 export class PostController {
   constructor(
