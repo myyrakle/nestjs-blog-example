@@ -22,7 +22,12 @@ import { AuthUser } from 'src/provider/auth_user.provider';
 import { UserService } from 'src/service/user.service';
 import { AppService } from '../service/app.service';
 import { DefaultResponseDto } from 'src/dto/default.response.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiProperty,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @UseGuards(AuthGuard)
 @Controller('/user')
@@ -34,6 +39,8 @@ export class UserController {
     @Inject(REQUEST) private readonly authUser: AuthUser,
   ) {}
 
+  @ApiOperation({ summary: '회원가입' })
+  @ApiResponse({ status: 200, description: '성공', type: SignupResponseDto })
   @Post('/signup')
   async signup(@Body() body: SignupRequestDto): Promise<SignupResponseDto> {
     const emailDeplicated = await this.userService.checkEmailDuplicated(
@@ -61,6 +68,12 @@ export class UserController {
     }
   }
 
+  @ApiOperation({ summary: '이메일 중복체크' })
+  @ApiResponse({
+    status: 200,
+    description: '성공',
+    type: CheckEmailResponseDto,
+  })
   @Get('/check-email-duplicated')
   async checkEmailDuplicated(
     @Query() query: CheckEmailRequestDto,
@@ -77,6 +90,8 @@ export class UserController {
     };
   }
 
+  @ApiOperation({ summary: '내 정보 조회(인증 필요)' })
+  @ApiResponse({ status: 200, description: '성공', type: MyInfoResponseDto })
   @Get('/my-info')
   @Roles(['USER'])
   async getMyInfo(): Promise<MyInfoResponseDto> {
@@ -89,6 +104,8 @@ export class UserController {
     };
   }
 
+  @ApiOperation({ summary: '회원탈퇴' })
+  @ApiResponse({ status: 200, description: '성공', type: DefaultResponseDto })
   @Delete('/close-my-account')
   @Roles(['USER'])
   async closeMyAccount(): Promise<DefaultResponseDto> {

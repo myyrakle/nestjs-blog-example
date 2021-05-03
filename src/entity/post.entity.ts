@@ -12,6 +12,7 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
+import { UserView } from 'src/vo/user_view.dto';
 import { User } from './user.entity';
 
 @Table
@@ -45,5 +46,5 @@ export class Post extends Model {
   useYn: boolean;
 
   @BelongsTo(() => User)
-  user: User;
+  user: UserView;
 }

@@ -1,6 +1,14 @@
 @token = localhost:3000
 
 ###
+GET http://{{token}}/
+Content-Type: application/json
+
+{
+}
+###
+
+### 회원가입
 POST http://{{token}}/user/signup
 Content-Type: application/json
 
@@ -11,4 +19,96 @@ Content-Type: application/json
 }
 ###
 
+### 로그인
+POST http://{{token}}/auth/login
+Content-Type: application/json
 
+{
+    "email": "sssang97@naver.com",
+    "password":"foobar1234"
+}
+###
+
+### 회원가입2
+POST http://{{token}}/user/signup
+Content-Type: application/json
+
+{
+    "name": "테스터2", 
+    "email": "sssang972@naver.com",
+    "password":"foobar1234"
+}
+###
+
+### 로그인2
+POST http://{{token}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "sssang972@naver.com",
+    "password":"foobar1234"
+}
+###
+
+
+### 내 정보 조회
+GET http://{{token}}/user/my-info
+Content-Type: application/json
+
+{
+}
+###
+
+### 회원 탈퇴
+DELETE http://{{token}}/user/close-my-account
+Content-Type: application/json
+
+{
+}
+###
+
+### 게시글 생성
+POST http://{{token}}/post/post
+Content-Type: application/json
+
+{
+    "title": "으악", 
+    "content": "테스트"
+}
+###
+
+### 게시글 수정
+PUT http://{{token}}/post/post/1
+Content-Type: application/json
+
+{
+    "title": "으악", 
+    "content": "테스트"
+}
+###
+
+### 게시글 조회
+GET http://{{token}}/post/post/1
+Content-Type: application/json
+
+{
+}
+###
+
+
+### 게시글 조회
+GET http://{{token}}/post/post-list
+Content-Type: application/json
+
+{
+}
+###
+
+
+###
+GET http://{{token}}/user/check-email-duplicated?email=sssang97@naver.com
+Content-Type: application/json
+
+{
+}
+###
