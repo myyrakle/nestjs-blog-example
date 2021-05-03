@@ -24,7 +24,14 @@ import { DefaultResponseDto } from 'src/dto/default.response.dto';
 import { PostSelectResponseDto } from 'src/dto/post/post_select.response.dto';
 import { PostListRequestDto } from 'src/dto/post/post_list.request.dto';
 import { PostListResponseDto } from 'src/dto/post/post_list.response.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @UseGuards(AuthGuard)
 @ApiTags('post')
@@ -36,6 +43,7 @@ export class PostController {
     @Inject(REQUEST) private readonly authUser: AuthUser,
   ) {}
 
+  @Post('/post')
   @Roles(['USER'])
   @ApiOperation({ summary: '게시글 작성' })
   @ApiResponse({
@@ -43,7 +51,6 @@ export class PostController {
     description: '성공',
     type: PostCreateResponseDto,
   })
-  @Post('/post')
   async createPost(
     @Body() body: PostCreateRequestDto,
   ): Promise<PostCreateResponseDto> {
@@ -60,6 +67,7 @@ export class PostController {
     };
   }
 
+  @Put('/post/:id')
   @Roles(['USER'])
   @ApiOperation({ summary: '게시글 수정' })
   @ApiResponse({
@@ -67,7 +75,13 @@ export class PostController {
     description: '성공',
     type: DefaultResponseDto,
   })
-  @Put('/post/:id')
+  @ApiParam({
+    name: 'id',
+    description: '식별자',
+    type: 'integer',
+    example: 1,
+    required: true,
+  })
   async updatePost(
     @Body() body: PostUpdateRequestDto,
     @Param('id') id: bigint,
@@ -98,6 +112,7 @@ export class PostController {
     };
   }
 
+  @Delete('/post/:id')
   @Roles(['USER'])
   @ApiOperation({ summary: '게시글 삭제' })
   @ApiResponse({
@@ -105,7 +120,13 @@ export class PostController {
     description: '성공',
     type: DefaultResponseDto,
   })
-  @Delete('/post/:id')
+  @ApiParam({
+    name: 'id',
+    description: '식별자',
+    type: 'integer',
+    example: 1,
+    required: true,
+  })
   async deletePost(@Param('id') id: bigint): Promise<DefaultResponseDto> {
     const post = await this.postService.findOneById(id);
 
@@ -136,6 +157,13 @@ export class PostController {
     description: '성공',
     type: PostSelectResponseDto,
   })
+  @ApiParam({
+    name: 'id',
+    description: '식별자',
+    type: 'integer',
+    example: 1,
+    required: true,
+  })
   async selectPost(@Param('id') id: bigint): Promise<PostSelectResponseDto> {
     const post = await this.postService.findOneById(id);
 
@@ -153,6 +181,20 @@ export class PostController {
     status: 200,
     description: '성공',
     type: PostListResponseDto,
+  })
+  @ApiQuery({
+    name: 'page',
+    description: '페이지',
+    type: 'integer',
+    example: 1,
+    required: false,
+  })
+  @ApiQuery({
+    name: 'limit',
+    description: '페이지 크기',
+    type: 'integer',
+    example: 1,
+    required: false,
   })
   async selectPostList(
     @Query() query: PostListRequestDto,

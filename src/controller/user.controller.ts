@@ -25,6 +25,7 @@ import { DefaultResponseDto } from 'src/dto/default.response.dto';
 import {
   ApiOperation,
   ApiProperty,
+  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -39,9 +40,9 @@ export class UserController {
     @Inject(REQUEST) private readonly authUser: AuthUser,
   ) {}
 
+  @Post('/signup')
   @ApiOperation({ summary: '회원가입' })
   @ApiResponse({ status: 200, description: '성공', type: SignupResponseDto })
-  @Post('/signup')
   async signup(@Body() body: SignupRequestDto): Promise<SignupResponseDto> {
     const emailDeplicated = await this.userService.checkEmailDuplicated(
       body?.email,
@@ -68,13 +69,20 @@ export class UserController {
     }
   }
 
+  @Get('/check-email-duplicated')
   @ApiOperation({ summary: '이메일 중복체크' })
   @ApiResponse({
     status: 200,
     description: '성공',
     type: CheckEmailResponseDto,
   })
-  @Get('/check-email-duplicated')
+  @ApiQuery({
+    name: 'email',
+    description: '이메일 값',
+    type: 'string',
+    example: 'sssang97@naver.com',
+    required: true,
+  })
   async checkEmailDuplicated(
     @Query() query: CheckEmailRequestDto,
   ): Promise<CheckEmailResponseDto> {
@@ -90,10 +98,10 @@ export class UserController {
     };
   }
 
-  @ApiOperation({ summary: '내 정보 조회(인증 필요)' })
-  @ApiResponse({ status: 200, description: '성공', type: MyInfoResponseDto })
   @Get('/my-info')
   @Roles(['USER'])
+  @ApiOperation({ summary: '내 정보 조회(인증 필요)' })
+  @ApiResponse({ status: 200, description: '성공', type: MyInfoResponseDto })
   async getMyInfo(): Promise<MyInfoResponseDto> {
     console.log('??', this.authUser);
     return {
@@ -104,10 +112,10 @@ export class UserController {
     };
   }
 
-  @ApiOperation({ summary: '회원탈퇴' })
-  @ApiResponse({ status: 200, description: '성공', type: DefaultResponseDto })
   @Delete('/close-my-account')
   @Roles(['USER'])
+  @ApiOperation({ summary: '회원탈퇴' })
+  @ApiResponse({ status: 200, description: '성공', type: DefaultResponseDto })
   async closeMyAccount(): Promise<DefaultResponseDto> {
     await this.userService.deleteOneById(this.authUser?.user?.id);
     return {
