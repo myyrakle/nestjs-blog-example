@@ -17,7 +17,6 @@ import { Roles } from 'src/lib/decorator';
 import { AuthUser } from 'src/provider/auth_user.provider';
 import { AppService } from '../service/app.service';
 import { PostUpdateRequestDto } from 'src/dto/post/post_update.request.dto';
-import { PostUpdateResponseDto } from 'src/dto/post/post_update.response.dto';
 import { PostService } from 'src/service/post.service';
 import { PostCreateRequestDto } from 'src/dto/post/post_create.request.dto';
 import { PostCreateResponseDto } from 'src/dto/post/post_create.response.dto';
@@ -25,7 +24,7 @@ import { DefaultResponseDto } from 'src/dto/default.response.dto';
 import { PostSelectResponseDto } from 'src/dto/post/post_select.response.dto';
 import { PostListRequestDto } from 'src/dto/post/post_list.request.dto';
 import { PostListResponseDto } from 'src/dto/post/post_list.response.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @UseGuards(AuthGuard)
 @ApiTags('post')
@@ -38,6 +37,12 @@ export class PostController {
   ) {}
 
   @Roles(['USER'])
+  @ApiOperation({ summary: '게시글 작성' })
+  @ApiResponse({
+    status: 200,
+    description: '성공',
+    type: PostCreateResponseDto,
+  })
   @Post('/post')
   async createPost(
     @Body() body: PostCreateRequestDto,
@@ -56,11 +61,17 @@ export class PostController {
   }
 
   @Roles(['USER'])
+  @ApiOperation({ summary: '게시글 수정' })
+  @ApiResponse({
+    status: 200,
+    description: '성공',
+    type: DefaultResponseDto,
+  })
   @Put('/post/:id')
   async updatePost(
     @Body() body: PostUpdateRequestDto,
     @Param('id') id: bigint,
-  ): Promise<PostUpdateResponseDto> {
+  ): Promise<DefaultResponseDto> {
     const post = await this.postService.findOneById(id);
 
     if (
@@ -82,13 +93,18 @@ export class PostController {
 
     return {
       success: true,
-      postId: id,
       message: '성공',
       error: null,
     };
   }
 
   @Roles(['USER'])
+  @ApiOperation({ summary: '게시글 삭제' })
+  @ApiResponse({
+    status: 200,
+    description: '성공',
+    type: DefaultResponseDto,
+  })
   @Delete('/post/:id')
   async deletePost(@Param('id') id: bigint): Promise<DefaultResponseDto> {
     const post = await this.postService.findOneById(id);
@@ -114,6 +130,12 @@ export class PostController {
   }
 
   @Get('/post/:id')
+  @ApiOperation({ summary: '게시글 조회' })
+  @ApiResponse({
+    status: 200,
+    description: '성공',
+    type: PostSelectResponseDto,
+  })
   async selectPost(@Param('id') id: bigint): Promise<PostSelectResponseDto> {
     const post = await this.postService.findOneById(id);
 
@@ -126,6 +148,12 @@ export class PostController {
   }
 
   @Get('/post-list')
+  @ApiOperation({ summary: '게시글 목록조회' })
+  @ApiResponse({
+    status: 200,
+    description: '성공',
+    type: PostListResponseDto,
+  })
   async selectPostList(
     @Query() query: PostListRequestDto,
   ): Promise<PostListResponseDto> {
