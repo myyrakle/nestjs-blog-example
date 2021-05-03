@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail } from 'class-validator';
-import { passwordHashing } from 'src/lib/password';
-import { uuid } from 'uuidv4';
 
 export class SignupRequestDto {
   @ApiProperty({

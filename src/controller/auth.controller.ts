@@ -21,7 +21,8 @@ import { passwordHashing } from 'src/lib/password';
 import { RefreshTokenService } from 'src/service/refresh_token.service';
 import { UserService } from 'src/service/user.service';
 import { AppService } from '../service/app.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { DefaultResponseDto } from 'src/dto/default.response.dto';
 
 @Controller('/auth')
 @ApiTags('auth')
@@ -33,6 +34,8 @@ export class AuthController {
   ) {}
 
   @Post('/login')
+  @ApiOperation({ summary: '로그인' })
+  @ApiResponse({ status: 200, description: '성공', type: LoginResponseDto })
   async login(
     @Body() body: LoginRequestDto,
     @Res({ passthrough: true }) response: Response,
@@ -73,6 +76,8 @@ export class AuthController {
   }
 
   @Put('/refresh')
+  @ApiOperation({ summary: '로그인 리프레시' })
+  @ApiResponse({ status: 200, description: '성공', type: RefreshRequestDto })
   async refresh(
     @Body() body: RefreshRequestDto,
     @Res({ passthrough: true }) response: Response,
@@ -99,10 +104,12 @@ export class AuthController {
   }
 
   @Delete('/logout')
+  @ApiOperation({ summary: '로그아웃' })
+  @ApiResponse({ status: 200, description: '성공', type: DefaultResponseDto })
   async logout(
     @Res({ passthrough: true }) response: Response,
     @Query() query: LogoutRequestDto,
-  ): Promise<LogoutResponseDto> {
+  ): Promise<DefaultResponseDto> {
     await this.tokenService.deleteToken(query.refreshToken);
 
     response.clearCookie('accessToken');
