@@ -25,7 +25,6 @@ import { PostSelectResponseDto } from 'src/dto/post/post_select.response.dto';
 import { PostListRequestDto } from 'src/dto/post/post_list.request.dto';
 import { PostListResponseDto } from 'src/dto/post/post_list.response.dto';
 import {
-  ApiBody,
   ApiOperation,
   ApiParam,
   ApiQuery,
