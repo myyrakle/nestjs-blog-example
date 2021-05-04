@@ -31,6 +31,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { PostCommentService } from 'src/service/post_comment.service';
 
 @UseGuards(AuthGuard)
 @ApiTags('post')
@@ -39,6 +40,7 @@ export class PostController {
   constructor(
     private readonly _appService: AppService,
     private readonly postService: PostService,
+    private readonly postCommentService: PostCommentService,
     @Inject(REQUEST) private readonly authUser: AuthUser,
   ) {}
 
@@ -165,10 +167,12 @@ export class PostController {
   })
   async selectPost(@Param('id') id: bigint): Promise<PostSelectResponseDto> {
     const post = await this.postService.findOneById(id);
+    const comment = await this.postCommentService.findList(id);
 
     return {
       success: true,
       post,
+      comment,
       message: '성공',
       error: null,
     };

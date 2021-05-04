@@ -11,6 +11,7 @@ import {
   AutoIncrement,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { Post } from './post.entity';
 import { User } from './user.entity';
@@ -46,6 +47,15 @@ export class PostComment extends Model {
   @Column(DataType.TEXT)
   content: string;
 
+  @Comment('사용여부 (논리적 삭제)')
+  @AllowNull(false)
+  @Default(true)
+  @Column
+  useYn: boolean;
+
   @BelongsTo(() => User)
   user: User;
+
+  @HasMany(() => PostComment)
+  childList: PostComment[];
 }

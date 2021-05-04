@@ -4,28 +4,32 @@ import { Op } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { PostCreateDto } from 'src/dto/post.create.dto';
 import { PostUpdateDto } from 'src/dto/post.update.dto';
+import { PostCommentCreateDto } from 'src/dto/post_comment.create.dto';
+import { PostCommentUpdateDto } from 'src/dto/post_comment.update.dto';
 import { PostListDto } from 'src/dto/post_list.dto';
 import { UserCreateDto } from 'src/dto/user.create.dto';
 import { UserUpdateDto } from 'src/dto/user.update.dto';
+import { PostComment } from 'src/entity/post.comment.entity';
 import { Post } from 'src/entity/post.entity';
 import { User } from 'src/entity/user.entity';
+import { PostCommentView } from 'src/vo/post_comment_view.dto';
 import { PostView } from 'src/vo/post_view.dto';
 
 @Injectable()
 export class PostCommentRepository {
   constructor(private connection: Sequelize) {}
 
-  // 게시글 생성
-  async createOne(value: PostCreateDto) {
-    const post = Post.build({
+  // 댓글 생성
+  async createOne(value: PostCommentCreateDto) {
+    const comment = PostComment.build({
       ...value,
     });
-    return await post.save();
+    return await comment.save();
   }
 
-  // 게시글 수정
-  async updateOne(value: PostUpdateDto) {
-    return await Post.update({ ...value }, { where: { id: value.id } });
+  // 댓글 수정
+  async updateOne(value: PostCommentUpdateDto) {
+    return await PostComment.update({ ...value }, { where: { id: value.id } });
   }
 
   // 계정 정보 삭제
@@ -34,38 +38,38 @@ export class PostCommentRepository {
   }
 
   // 식별자로 조회
-  async findOneById(id: bigint): Promise<PostView> {
-    return await Post.findOne({
+  async findOneById(id: bigint): Promise<PostCommentView> {
+    const comment = await PostComment.findOne({
       where: { id, useYn: true },
-      include: { model: User, attributes: ['name', 'email', 'userType'] },
+      include: {
+        model: PostComment,
+        attributes: ['name', 'email', 'userType'],
+      },
     });
+    return { ...comment, childList: [] };
   }
 
   // 목록 조회
-  async findList(value: PostListDto) {
-    console.error('음');
-    console.error(value.limit, value.offset);
-    return await this.connection.query(
-      `
-      SELECT 
-        *
-      FROM 
-      (
-        SELECT 
-          *
-          , COUNT(1) OVER() AS "totalCount" 
-        FROM "Posts"
-        WHERE 1=1
-          AND "useYn" IS TRUE
-      ) T
-      ORDER BY T."createdAt" DESC
-      OFFSET :offset
-      LIMIT :limit
-    `,
-      {
-        type: QueryTypes.SELECT,
-        replacements: { offset: value.offset, limit: value.limit },
-      },
-    );
+  async findList(postId: bigint) {
+    return await PostComment.findAll({
+      where: { postId, useYn: true },
+      order: [['createdAt', 'desc']],
+      attributes: ['id', 'content', 'createdAt', 'userId'],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'email', 'name', 'userType'],
+        },
+        {
+          model: PostComment,
+          where: { useYn: true },
+          order: [['createdAt', 'desc']],
+          attributes: ['id', 'content', 'createdAt', 'userId'],
+          include: [
+            { model: User, attributes: ['id', 'email', 'name', 'userType'] },
+          ],
+        },
+      ],
+    });
   }
 }
