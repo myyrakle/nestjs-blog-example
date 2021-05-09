@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PostCreateDto } from 'src/dto/post.create.dto';
-import { PostUpdateDto } from 'src/dto/post.update.dto';
-import { PostListDto } from 'src/dto/post_list.dto';
+import { PostCreateDto } from 'src/post/dto/post.create.dto';
+import { PostUpdateDto } from 'src/post/dto/post.update.dto';
+import { PostListDto } from 'src/post/dto/post_list.dto';
 import { UserCreateDto } from 'src/dto/user.create.dto';
-import { PostRepository } from 'src/repository/post.repository';
-import { PostView } from 'src/vo/post_view.dto';
+import { PostRepository } from 'src/post/post.repository';
+import { PostView } from 'src/post/vo/post_view.dto';
 
 @Injectable()
 export class PostService {
@@ -43,5 +43,10 @@ export class PostService {
     const totalCount = result.length === 0 ? 0 : result[0].totalCount;
 
     return [list, totalCount];
+  }
+
+  // 게시글 목록조회
+  async test() {
+    return await this.postRepository.test();
   }
 }

@@ -2,18 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { QueryTypes } from 'sequelize';
 import { Op } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { PostCreateDto } from 'src/dto/post.create.dto';
-import { PostUpdateDto } from 'src/dto/post.update.dto';
-import { PostCommentCreateDto } from 'src/dto/post_comment.create.dto';
-import { PostCommentUpdateDto } from 'src/dto/post_comment.update.dto';
-import { PostListDto } from 'src/dto/post_list.dto';
+import { PostCreateDto } from 'src/post/dto/post.create.dto';
+import { PostUpdateDto } from 'src/post/dto/post.update.dto';
+import { PostCommentCreateDto } from 'src/post_comment.ts/dto/post_comment.create.dto';
+
+import { PostListDto } from 'src/post/dto/post_list.dto';
 import { UserCreateDto } from 'src/dto/user.create.dto';
 import { UserUpdateDto } from 'src/dto/user.update.dto';
-import { PostComment } from 'src/entity/post.comment.entity';
-import { Post } from 'src/entity/post.entity';
+import { PostComment } from 'src/post_comment.ts/post.comment.entity';
+import { Post } from 'src/post/post.entity';
 import { User } from 'src/entity/user.entity';
-import { PostCommentView } from 'src/vo/post_comment_view.dto';
-import { PostView } from 'src/vo/post_view.dto';
+import { PostCommentView } from 'src/post_comment.ts/vo/post_comment_view.dto';
+import { PostView } from 'src/post/vo/post_view.dto';
+import { PostCommentUpdateDto } from './dto/post_comment.update.dto';
 
 @Injectable()
 export class PostCommentRepository {

@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PostCreateDto } from 'src/dto/post.create.dto';
-import { PostUpdateDto } from 'src/dto/post.update.dto';
-import { PostCommentCreateDto } from 'src/dto/post_comment.create.dto';
-import { PostCommentUpdateDto } from 'src/dto/post_comment.update.dto';
-import { PostListDto } from 'src/dto/post_list.dto';
+import { PostCreateDto } from 'src/post/dto/post.create.dto';
+import { PostUpdateDto } from 'src/post/dto/post.update.dto';
+import { PostCommentCreateDto } from 'src/post_comment.ts/dto/post_comment.create.dto';
+import { PostListDto } from 'src/post/dto/post_list.dto';
 import { UserCreateDto } from 'src/dto/user.create.dto';
-import { PostRepository } from 'src/repository/post.repository';
-import { PostCommentRepository } from 'src/repository/post_comment.repository';
-import { PostCommentView } from 'src/vo/post_comment_view.dto';
-import { PostView } from 'src/vo/post_view.dto';
+import { PostRepository } from 'src/post/post.repository';
+import { PostCommentRepository } from 'src/post_comment.ts/post_comment.repository';
+import { PostCommentView } from 'src/post_comment.ts/vo/post_comment_view.dto';
+import { PostView } from 'src/post/vo/post_view.dto';
+import { PostCommentUpdateDto } from './dto/post_comment.update.dto';
 
 @Injectable()
 export class PostCommentService {

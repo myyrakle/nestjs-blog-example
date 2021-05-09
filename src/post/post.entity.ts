@@ -13,7 +13,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { UserView } from 'src/vo/user_view.dto';
-import { User } from './user.entity';
+import { User } from '../entity/user.entity';
 
 @Table
 export class Post extends Model {

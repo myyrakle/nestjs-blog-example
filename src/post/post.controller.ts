@@ -16,14 +16,14 @@ import { AuthGuard } from 'src/guard/auth.guard';
 import { Roles } from 'src/lib/decorator';
 import { AuthUser } from 'src/provider/auth_user.provider';
 import { AppService } from '../service/app.service';
-import { PostUpdateRequestDto } from 'src/dto/post/post_update.request.dto';
-import { PostService } from 'src/service/post.service';
-import { PostCreateRequestDto } from 'src/dto/post/post_create.request.dto';
-import { PostCreateResponseDto } from 'src/dto/post/post_create.response.dto';
+import { PostUpdateRequestDto } from 'src/post/dto/post_update.request.dto';
+import { PostService } from 'src/post/post.service';
+import { PostCreateRequestDto } from 'src/post/dto/post_create.request.dto';
+import { PostCreateResponseDto } from 'src/post/dto/post_create.response.dto';
 import { DefaultResponseDto } from 'src/dto/default.response.dto';
-import { PostSelectResponseDto } from 'src/dto/post/post_select.response.dto';
-import { PostListRequestDto } from 'src/dto/post/post_list.request.dto';
-import { PostListResponseDto } from 'src/dto/post/post_list.response.dto';
+import { PostSelectResponseDto } from 'src/post/dto/post_select.response.dto';
+import { PostListRequestDto } from 'src/post/dto/post_list.request.dto';
+import { PostListResponseDto } from 'src/post/dto/post_list.response.dto';
 import {
   ApiOperation,
   ApiParam,
@@ -31,14 +31,13 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { PostCommentService } from 'src/service/post_comment.service';
+import { PostCommentService } from 'src/post_comment.ts/post_comment.service';
 
 @UseGuards(AuthGuard)
 @ApiTags('post')
 @Controller('/post')
 export class PostController {
   constructor(
-    private readonly _appService: AppService,
     private readonly postService: PostService,
     private readonly postCommentService: PostCommentService,
     @Inject(REQUEST) private readonly authUser: AuthUser,
@@ -218,5 +217,10 @@ export class PostController {
       message: '성공',
       error: null,
     };
+  }
+
+  @Get('test')
+  async test() {
+    return { data: await this.postService.test() };
   }
 }

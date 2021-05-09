@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { PostView } from 'src/vo/post_view.dto';
+import { PostView } from 'src/post/vo/post_view.dto';
 
 @Injectable()
 export class PostListResponseDto {

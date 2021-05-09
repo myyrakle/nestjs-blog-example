@@ -13,8 +13,8 @@ import {
   BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
-import { Post } from './post.entity';
-import { User } from './user.entity';
+import { Post } from '../post/post.entity';
+import { User } from '../entity/user.entity';
 
 @Table
 export class PostComment extends Model {
