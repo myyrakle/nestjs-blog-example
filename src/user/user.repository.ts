@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Op } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { UserCreateDto } from 'src/dto/user.create.dto';
-import { UserUpdateDto } from 'src/dto/user.update.dto';
-import { User } from 'src/entity/user.entity';
+import { UserCreateDto } from './dto/user.create.dto';
+import { UserUpdateDto } from './dto/user.update.dto';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class UserRepository {

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from 'src/entity/user.entity';
+import { User } from 'src/user/user.entity';
 import { passwordHashing } from 'src/lib/password';
-import { UserView } from 'src/vo/user_view.dto';
+import { UserView } from 'src/user/dto/user-view.dto';
 import { uuid } from 'uuidv4';
 
 @Injectable()

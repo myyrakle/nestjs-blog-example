@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PostCreateDto } from 'src/post/dto/post.create.dto';
 import { PostUpdateDto } from 'src/post/dto/post.update.dto';
-import { PostListDto } from 'src/post/dto/post_list.dto';
-import { UserCreateDto } from 'src/dto/user.create.dto';
+import { PostListDto } from 'src/post/dto/post-list.dto';
+import { UserCreateDto } from 'src/user/dto/user.create.dto';
 import { PostRepository } from 'src/post/post.repository';
-import { PostView } from 'src/post/vo/post_view.dto';
+import { PostView } from 'src/post/vo/post-view.dto';
 
 @Injectable()
 export class PostService {

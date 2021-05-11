@@ -18,17 +18,17 @@ import { PostCommentRepository } from '../post-comment.ts/post-comment.repositor
 import { PostCommentModule } from '../post-comment.ts/post-comment.module';
 
 @Module({
-  imports: [PostCommentModule],
-  controllers: [PostController],
+  imports: [],
+  controllers: [],
   providers: [
     UserService,
     UserRepository,
-    PostService,
-    PostRepository,
+    RefreshTokenService,
+    RefreshTokenRepository,
     AuthUser,
     Mybatis,
     ...databaseProviders,
   ],
-  exports: [PostService, PostRepository],
+  exports: [RefreshTokenService, RefreshTokenRepository],
 })
-export class PostModule {}
+export class RefreshTokenModule {}

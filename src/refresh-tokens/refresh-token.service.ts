@@ -1,11 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
-import { RefreshTokenCreateDto } from 'src/dto/refresh_token.create.dto';
-import { UserCreateDto } from 'src/dto/user.create.dto';
-import { User } from 'src/entity/user.entity';
-import { RefreshTokenRepository } from 'src/repository/refresh_token.repository';
-import { UserRepository } from 'src/repository/user.repository';
-
+import { RefreshTokenRepository } from './refresh-token.repository';
 @Injectable()
 export class RefreshTokenService {
   constructor(private tokenRepository: RefreshTokenRepository) {}

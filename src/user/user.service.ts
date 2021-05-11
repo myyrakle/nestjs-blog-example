@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
-import { UserCreateDto } from 'src/dto/user.create.dto';
-import { User } from 'src/entity/user.entity';
-import { UserRepository } from 'src/repository/user.repository';
+import { UserCreateDto } from './dto/user.create.dto';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {

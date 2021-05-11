@@ -1,34 +1,23 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from 'src/controller/auth.controller';
 import { PostController } from 'src/post/post.controller';
-import { UserController } from 'src/controller/user.controller';
 import { AuthUser } from 'src/provider/auth_user.provider';
 import { databaseProviders } from 'src/provider/database.provider';
 import { Mybatis } from 'src/provider/mybatis.provider';
-import { PostRepository } from 'src/post/post.repository';
-import { PostCommentRepository } from 'src/post_comment.ts/post_comment.repository';
-import { RefreshTokenRepository } from 'src/repository/refresh_token.repository';
-import { UserRepository } from 'src/repository/user.repository';
 import { PostService } from 'src/post/post.service';
-import { RefreshTokenService } from 'src/service/refresh_token.service';
-import { UserService } from 'src/service/user.service';
-import { AppController } from './controller/app.controller';
-import { AppService } from './service/app.service';
 import { PostModule } from './post/post.module';
-import { PostCommentModule } from './post_comment.ts/post.comment.module';
+import { PostCommentModule } from './post-comment.ts/post-comment.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { UserService } from './user/user.service';
+import { RefreshTokenService } from './refresh-tokens/refresh-token.service';
+import { UserRepository } from './user/user.repository';
+import { RefreshTokenRepository } from './refresh-tokens/refresh-token.repository';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [PostModule, PostCommentModule],
-  controllers: [AppController, UserController, AuthController],
-  providers: [
-    AppService,
-    UserService,
-    RefreshTokenService,
-    UserRepository,
-    RefreshTokenRepository,
-    AuthUser,
-    Mybatis,
-    ...databaseProviders,
-  ],
+  imports: [PostModule, PostCommentModule, AuthModule, UserModule],
+  controllers: [AppController],
+  providers: [AppService, AuthUser, Mybatis, ...databaseProviders],
 })
 export class AppModule {}

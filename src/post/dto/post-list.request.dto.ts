@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { Default } from 'sequelize-typescript';
-import { PostView } from 'src/post/vo/post_view.dto';
 
 @Injectable()
 export class PostListRequestDto {

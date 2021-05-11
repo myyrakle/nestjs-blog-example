@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { DataType } from 'sequelize-typescript';
-import { UserView } from 'src/vo/user_view.dto';
+import { UserView } from 'src/user/dto/user-view.dto';
 
 @Injectable()
 export class PostView {

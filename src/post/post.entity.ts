@@ -12,8 +12,8 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { UserView } from 'src/vo/user_view.dto';
-import { User } from '../entity/user.entity';
+import { UserView } from 'src/user/dto/user-view.dto';
+import { User } from '../user/user.entity';
 
 @Table
 export class Post extends Model {

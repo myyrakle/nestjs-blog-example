@@ -10,18 +10,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { CheckEmailRequestDto } from 'src/dto/user/check_email.request.dto';
-import { CheckEmailResponseDto } from 'src/dto/user/check_email.response.dto';
-import { MyInfoResponseDto } from 'src/dto/user/my_info.response.dto';
-import { SignupRequestDto } from 'src/dto/user/signup.request.dto';
-import { SignupResponseDto } from 'src/dto/user/signup.response.dto';
-import { UserCreateDto } from 'src/dto/user.create.dto';
+import { CheckEmailRequestDto } from 'src/user/dto/check-email.request.dto';
+import { CheckEmailResponseDto } from './dto/check-email.response.dto';
+import { MyInfoResponseDto } from './dto/my-info.response.dto';
+import { SignupRequestDto } from './dto/signup.request.dto';
+import { SignupResponseDto } from './dto/signup.response.dto';
+import { UserCreateDto } from 'src/user/dto/user.create.dto';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { Roles } from 'src/lib/decorator';
-import { AuthUser } from 'src/provider/auth_user.provider';
-import { UserService } from 'src/service/user.service';
-import { AppService } from '../service/app.service';
-import { DefaultResponseDto } from 'src/dto/default.response.dto';
 import {
   ApiOperation,
   ApiProperty,
@@ -29,13 +25,16 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { AppService } from '../app.service';
+import { UserService } from './user.service';
+import { AuthUser } from '../provider/auth_user.provider';
+import { DefaultResponseDto } from '../lib/dto/default.response.dto';
 
 @UseGuards(AuthGuard)
 @Controller('/user')
 @ApiTags('user')
 export class UserController {
   constructor(
-    private readonly _appService: AppService,
     private readonly userService: UserService,
     @Inject(REQUEST) private readonly authUser: AuthUser,
   ) {}
@@ -103,7 +102,6 @@ export class UserController {
   @ApiOperation({ summary: '내 정보 조회(인증 필요)' })
   @ApiResponse({ status: 200, description: '성공', type: MyInfoResponseDto })
   async getMyInfo(): Promise<MyInfoResponseDto> {
-    console.log('??', this.authUser);
     return {
       success: true,
       user: this.authUser?.user,

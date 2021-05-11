@@ -5,10 +5,10 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector, REQUEST } from '@nestjs/core';
-import { checkToken } from 'src/lib/jwt';
-import { AuthUser } from 'src/provider/auth_user.provider';
-import { UserService } from 'src/service/user.service';
-import { UserView } from 'src/vo/user_view.dto';
+import { checkToken } from '../lib/jwt';
+import { AuthUser } from '../provider/auth_user.provider';
+import { UserView } from '../user/dto/user-view.dto';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

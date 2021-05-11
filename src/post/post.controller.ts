@@ -15,15 +15,15 @@ import { REQUEST } from '@nestjs/core';
 import { AuthGuard } from 'src/guard/auth.guard';
 import { Roles } from 'src/lib/decorator';
 import { AuthUser } from 'src/provider/auth_user.provider';
-import { AppService } from '../service/app.service';
-import { PostUpdateRequestDto } from 'src/post/dto/post_update.request.dto';
+import { AppService } from '../app.service';
+import { PostUpdateRequestDto } from 'src/post/dto/post-update.request.dto';
 import { PostService } from 'src/post/post.service';
-import { PostCreateRequestDto } from 'src/post/dto/post_create.request.dto';
-import { PostCreateResponseDto } from 'src/post/dto/post_create.response.dto';
-import { DefaultResponseDto } from 'src/dto/default.response.dto';
-import { PostSelectResponseDto } from 'src/post/dto/post_select.response.dto';
-import { PostListRequestDto } from 'src/post/dto/post_list.request.dto';
-import { PostListResponseDto } from 'src/post/dto/post_list.response.dto';
+import { PostCreateRequestDto } from 'src/post/dto/post-create.request.dto';
+import { PostCreateResponseDto } from 'src/post/dto/post-create.response.dto';
+import { DefaultResponseDto } from 'src/lib/dto/default.response.dto';
+import { PostSelectResponseDto } from 'src/post/dto/post-select.response.dto';
+import { PostListRequestDto } from 'src/post/dto/post-list.request.dto';
+import { PostListResponseDto } from 'src/post/dto/post-list.response.dto';
 import {
   ApiOperation,
   ApiParam,
@@ -31,7 +31,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { PostCommentService } from 'src/post_comment.ts/post_comment.service';
+import { PostCommentService } from 'src/post-comment.ts/post-comment.service';
 
 @UseGuards(AuthGuard)
 @ApiTags('post')

@@ -11,24 +11,23 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { LoginRequestDto } from 'src/dto/auth/login.request.dto';
-import { LoginResponseDto } from 'src/dto/auth/login.response.dto';
-import { LogoutRequestDto } from 'src/dto/auth/logout.request.dto';
-import { LogoutResponseDto } from 'src/dto/auth/logout.response.dto';
-import { RefreshRequestDto } from 'src/dto/auth/refresh.request.dto';
+import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
+import { LoginResponseDto } from './dto/login.response.dto';
+import { LogoutRequestDto } from './dto/logout.request.dto';
+import { LogoutResponseDto } from './dto/logout.response.dto';
+import { RefreshRequestDto } from './dto/refresh.request.dto';
 import { makeAccessToken, makeRefreshToken } from 'src/lib/jwt';
 import { passwordHashing } from 'src/lib/password';
-import { RefreshTokenService } from 'src/service/refresh_token.service';
-import { UserService } from 'src/service/user.service';
-import { AppService } from '../service/app.service';
+import { RefreshTokenService } from 'src/refresh-tokens/refresh-token.service';
+import { UserService } from 'src/user/user.service';
+import { AppService } from '../app.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { DefaultResponseDto } from 'src/dto/default.response.dto';
+import { DefaultResponseDto } from 'src/lib/dto/default.response.dto';
 
 @Controller('/auth')
 @ApiTags('auth')
 export class AuthController {
   constructor(
-    private readonly _appService: AppService,
     private readonly userService: UserService,
     private readonly tokenService: RefreshTokenService,
   ) {}

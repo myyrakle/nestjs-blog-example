@@ -1,12 +1,12 @@
 import { Sequelize } from 'sequelize-typescript';
-import { Post } from 'src/post/post.entity';
-import { RefreshToken } from 'src/entity/refresh.token.entity';
-import { User } from '../entity/user.entity';
+import { User } from '../user/user.entity';
+import { RefreshToken } from '../refresh-tokens/refresh-token.entity';
+import { Post } from '../post/post.entity';
+import { PostComment } from '../post-comment.ts/post-comment.entity';
 
 const DATABASE_URL = process.env['NEST_JS_TEST_DATEBASE_URL'];
 
 import * as pg from 'pg';
-import { PostComment } from 'src/post_comment.ts/post.comment.entity';
 pg.defaults.parseInt8 = true;
 
 console.log(DATABASE_URL);

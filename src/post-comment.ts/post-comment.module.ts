@@ -6,6 +6,7 @@ import { AuthUser } from 'src/provider/auth_user.provider';
 import { databaseProviders } from 'src/provider/database.provider';
 import { Mybatis } from 'src/provider/mybatis.provider';
 import { PostRepository } from 'src/post/post.repository';
+import { PostCommentRepository } from 'src/post-comment.ts/post-comment.repository';
 import { RefreshTokenRepository } from 'src/refresh-tokens/refresh-token.repository';
 import { UserRepository } from 'src/user/user.repository';
 import { PostService } from 'src/post/post.service';
@@ -13,22 +14,18 @@ import { RefreshTokenService } from 'src/refresh-tokens/refresh-token.service';
 import { UserService } from 'src/user/user.service';
 import { AppController } from '../app.controller';
 import { AppService } from '../app.service';
-import { PostCommentService } from 'src/post-comment.ts/post-comment.service';
-import { PostCommentRepository } from '../post-comment.ts/post-comment.repository';
-import { PostCommentModule } from '../post-comment.ts/post-comment.module';
+import { PostCommentService } from './post-comment.service';
 
 @Module({
-  imports: [PostCommentModule],
-  controllers: [PostController],
+  imports: [],
+  controllers: [],
   providers: [
-    UserService,
-    UserRepository,
-    PostService,
-    PostRepository,
+    PostCommentService,
+    PostCommentRepository,
     AuthUser,
     Mybatis,
     ...databaseProviders,
   ],
-  exports: [PostService, PostRepository],
+  exports: [PostCommentService, PostCommentRepository],
 })
-export class PostModule {}
+export class PostCommentModule {}
