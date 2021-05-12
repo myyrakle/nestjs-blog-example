@@ -47,7 +47,7 @@ export class PostCommentRepository {
   // 목록 조회
   async findList(postId: bigint) {
     return await PostComment.findAll({
-      where: { postId, useYn: true },
+      where: { postId, useYn: true, parentId: null },
       order: [['createdAt', 'desc']],
       attributes: ['id', 'content', 'createdAt', 'userId'],
       include: [
@@ -63,6 +63,7 @@ export class PostCommentRepository {
           include: [
             { model: User, attributes: ['id', 'email', 'name', 'userType'] },
           ],
+          required: false,
         },
       ],
     });

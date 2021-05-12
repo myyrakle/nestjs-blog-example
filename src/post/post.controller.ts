@@ -32,6 +32,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { PostCommentService } from 'src/post-comment.ts/post-comment.service';
+import { PostCommentCreateDto } from '../post-comment.ts/dto/post-comment.create.dto';
+import { PostCommentCreateResponseDto } from '../post-comment.ts/dto/post-comment.create.response.dto';
+import { PostCommentCreateRequestDto } from '../post-comment.ts/dto/post-comment.create.request.dto';
 
 @UseGuards(AuthGuard)
 @ApiTags('post')
@@ -214,6 +217,30 @@ export class PostController {
       success: true,
       list,
       totalCount,
+      message: '성공',
+      error: null,
+    };
+  }
+
+  @Post('/comment')
+  @Roles(['USER'])
+  @ApiOperation({ summary: '게시글에 댓글 작성' })
+  @ApiResponse({
+    status: 200,
+    description: '성공',
+    type: PostCommentCreateResponseDto,
+  })
+  async createPostComment(
+    @Body() body: PostCommentCreateRequestDto,
+  ): Promise<PostCommentCreateResponseDto> {
+    const result = await this.postCommentService.createOne({
+      ...body,
+      userId: this.authUser?.user?.id,
+    });
+
+    return {
+      success: true,
+      postCommentId: result.id,
       message: '성공',
       error: null,
     };
